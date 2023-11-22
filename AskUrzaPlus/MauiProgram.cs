@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Maui.Storage;
 
 namespace AskUrzaPlus
 {
@@ -18,6 +19,9 @@ namespace AskUrzaPlus
 #if DEBUG
     		builder.Logging.AddDebug();
 #endif
+
+            string dbPath = Path.Combine(FileSystem.AppDataDirectory, "urza.db3");
+            builder.Services.AddSingleton<UrzaRepository>(s => ActivatorUtilities.CreateInstance<UrzaRepository>(s, dbPath));
 
             return builder.Build();
         }
