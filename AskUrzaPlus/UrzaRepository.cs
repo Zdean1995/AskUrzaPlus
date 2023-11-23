@@ -1,5 +1,6 @@
 ﻿using AskUrzaPlus.Models;
 using SQLite;
+using System.Reflection;
 
 namespace AskUrzaPlus;
 public class UrzaRepository(string dbPath)
@@ -14,6 +15,16 @@ public class UrzaRepository(string dbPath)
         if (conn != null)
         {
             return;
+        }
+
+        var assembly = IntrospectionExtensions.GetTypeInfo(typeof(App)).Assembly;
+        using (Stream stream = assembly.GetManifestResourceStream("AskUrzaPlus.urza.db3"))
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                File.WriteAllBytes(_dbPath, memoryStream.ToArray());
+            }
         }
 
         conn = new SQLiteAsyncConnection(_dbPath);

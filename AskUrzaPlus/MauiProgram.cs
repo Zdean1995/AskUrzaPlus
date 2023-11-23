@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using AskUrzaPlus.ViewModels;
+using AskUrzaPlus.Views;
+using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Storage;
 
 namespace AskUrzaPlus
@@ -21,7 +23,10 @@ namespace AskUrzaPlus
 #endif
 
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "urza.db3");
-            builder.Services.AddSingleton<UrzaRepository>(s => ActivatorUtilities.CreateInstance<UrzaRepository>(s, dbPath));
+            builder.Services.AddSingleton(s => ActivatorUtilities.CreateInstance<UrzaRepository>(s, dbPath));
+
+            builder.Services.AddSingleton<AskUrzaPage>();
+            builder.Services.AddSingleton<AskUrzaViewModel>();
 
             return builder.Build();
         }
